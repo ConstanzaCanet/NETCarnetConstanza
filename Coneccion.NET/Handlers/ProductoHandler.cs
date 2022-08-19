@@ -77,7 +77,7 @@ namespace Coneccion.NET.Handlers
         }
 
 
-        public List<Product> GetProductos()
+        public List<Product> GetAllProductos()
         {
             List<Product> productos = new List<Product>();
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
@@ -97,10 +97,50 @@ namespace Coneccion.NET.Handlers
                                 Product producto = new Product();
                                 producto.Id = Convert.ToInt32(dataReader["Id"]);
                                 producto.Stock = Convert.ToInt32(dataReader["Stock"]);
-                                producto.IdUser = Convert.ToInt32(dataReader["IdUser"]);
-                                producto.Cost = Convert.ToInt32(dataReader["Cost"]);
-                                producto.SalesPrice = Convert.ToInt32(dataReader["SalesPrice"]);
-                                producto.Description = dataReader["Description"].ToString();
+                                producto.IdUser = Convert.ToInt32(dataReader["IdUsuario"]);
+                                producto.Cost = Convert.ToInt32(dataReader["Costo"]);
+                                producto.SalesPrice = Convert.ToInt32(dataReader["PrecioVenta"]);
+                                producto.Description = dataReader["Descripciones"].ToString();
+
+                                productos.Add(producto);
+                            }
+                        }
+                    }
+
+                    sqlConnection.Close();
+                }
+
+                return productos;
+            }
+        }
+
+        public List<Product> GetProducto(int id)
+        {
+            List<Product> productos = new List<Product>();
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                SqlParameter sqlParameter = new SqlParameter("IdUsuario", SqlDbType.BigInt);
+                sqlParameter.Value = id;
+
+                using (SqlCommand sqlCommand = new SqlCommand(
+                    "SELECT * FROM Producto WHERE Id = @IdUsuario ", sqlConnection))
+                {
+                    sqlConnection.Open();
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        // Me aseguro que haya filas que leer
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                Product producto = new Product();
+                                producto.Id = Convert.ToInt32(dataReader["Id"]);
+                                producto.Stock = Convert.ToInt32(dataReader["Stock"]);
+                                producto.IdUser = Convert.ToInt32(dataReader["IdUsuario"]);
+                                producto.Cost = Convert.ToInt32(dataReader["Costo"]);
+                                producto.SalesPrice = Convert.ToInt32(dataReader["PrecioVenta"]);
+                                producto.Description = dataReader["Descripciones"].ToString();
 
                                 productos.Add(producto);
                             }

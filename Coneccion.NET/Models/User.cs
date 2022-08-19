@@ -5,7 +5,7 @@ namespace Coneccion.NET.Models
 {
     public class User
     {
-        public int Id;
+        public int Id { get; set; }
         private string name;
         private string lastname;
         private string userName;
@@ -35,12 +35,6 @@ namespace Coneccion.NET.Models
 
         //setters & getters
 
-
-        public int ID
-        {
-            get { return Id; }
-            set { Id = value; }
-        }
         public string Name
         {
             get { return Name; }

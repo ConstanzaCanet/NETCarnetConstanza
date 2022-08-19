@@ -4,7 +4,7 @@ namespace Coneccion.NET.Models
 {
     public class Product
     {
-        public int Id;
+        public int Id { get; set; }
         private string description;
         private double cost;
         private double salesPrice;
@@ -34,18 +34,6 @@ namespace Coneccion.NET.Models
         }
 
         //setters & getters
-        public int ID
-        {
-            get
-            {
-                return Id;
-            }
-            set
-            {
-                Id = value;
-            }
-
-        }
 
         public string Description
         {

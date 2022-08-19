@@ -53,8 +53,66 @@ namespace Coneccion.NET.Handlers
 
 
 
-        
-        
+
+
+
+
+        //Buscar por userName
+
+        public List<User> GetUserName(string userName)
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+                {
+                    SqlParameter sqlParameterUserName = new SqlParameter("userName", SqlDbType.VarChar);
+                    sqlParameterUserName.Value = userName;
+
+
+                    using (SqlCommand sqlCommand = new SqlCommand(
+                        "SELECT * FROM Usuario WHERE NombreUsuario =  @userName", sqlConnection))
+                    {
+                        sqlConnection.Open();
+
+                        using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                        {
+
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    User user = new User();
+                                    user.Id = Convert.ToInt32(dataReader["Id"]);
+                                    user.UserName = dataReader["NombreUsuario"].ToString();
+                                    user.Name = dataReader["Nombre"].ToString();
+                                    user.Lastname = dataReader["Apellido"].ToString();
+                                    user.Email = dataReader["Mail"].ToString();
+
+
+                                }
+                            }
+                        }
+                        sqlConnection.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return users;
+
+        }
+
+
+
+
+
+
+
+
         public void Delete(User user)
         {
 

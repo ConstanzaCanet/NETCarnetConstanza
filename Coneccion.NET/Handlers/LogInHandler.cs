@@ -6,54 +6,58 @@ namespace Coneccion.NET.Handlers
 {
     public class LogInHandler : DbHandler
     {
-        public bool Login(string userName, string password)
+        public User Login(string userName, string password)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            User user = new User();
+            try
             {
-               // string querySerch = "SELECT FROM Usuario WHERE NombreUsuario=@userName and Contraseña=@password;";
-
-                SqlParameter sqlParameterUserName = new SqlParameter("userName", SqlDbType.VarChar);
-                sqlParameterUserName.Value = userName;
-
-                SqlParameter sqlParameterPassword = new SqlParameter("password", SqlDbType.VarChar);
-                sqlParameterPassword.Value = password;
-
-                using (SqlCommand sqlCommand = new SqlCommand(
-                   "SELECT FROM Usuario WHERE NombreUsuario=@userName and Contraseña=@password;", sqlConnection))
+                using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
                 {
+                    // string querySerch = "SELECT FROM Usuario WHERE NombreUsuario=@userName and Contraseña=@password;";
 
+                    SqlParameter sqlParameterUserName = new SqlParameter("userName", SqlDbType.VarChar);
+                    sqlParameterUserName.Value = userName;
 
-                    sqlConnection.Open();
+                    SqlParameter sqlParameterPassword = new SqlParameter("password", SqlDbType.VarChar);
+                    sqlParameterPassword.Value = password;
 
-                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    using (SqlCommand sqlCommand = new SqlCommand(
+                       "SELECT FROM Usuario WHERE NombreUsuario=@userName and Contraseña=@password;", sqlConnection))
                     {
-                        if (dataReader.HasRows)
+
+
+                        sqlConnection.Open();
+
+                        using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
                         {
-                            while (dataReader.Read())
+                            if (dataReader.HasRows)
                             {
-                                User usuario = new User();
-                                usuario.UserName = dataReader["UserName"].ToString();
-                                usuario.Password = dataReader["Password"].ToString();         
+                                while (dataReader.Read())
+                                {
+                                    user.Id = Convert.ToInt32(dataReader["Id"]);
+                                    user.UserName = dataReader["NombreUsuario"].ToString();
+                                    user.Name = dataReader["Nombre"].ToString();
+                                    user.Lastname = dataReader["Apellido"].ToString();
+                                    user.Email = dataReader["Mail"].ToString();
 
+                                }
                             }
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
+                          
                         }
 
+                        sqlConnection.Close();
                     }
 
                 }
-
-
-
-
-
-
-                
             }
+            catch(Exception ex)
+            {
+                Console.Write(ex);
+            }
+                                
+            
+            return user;
+
 
         }
     }

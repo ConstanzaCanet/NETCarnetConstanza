@@ -26,7 +26,7 @@ namespace Coneccion.NET.Handlers
                             {
                                 Sale venta = new Sale();
                                 venta.Id = Convert.ToInt32(dataReader["Id"]);
-                                venta.Coments = dataReader["Comentarios"].ToString();
+                                venta.coments = dataReader["Comentarios"].ToString();
                                
                                 ventas.Add(venta);
                             }

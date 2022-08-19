@@ -7,11 +7,17 @@ namespace Coneccion.NET.Handlers
     public class ProductoVendidoHandler : DbHandler
     {
 
-        public List<soldProduct> GetTodosProductosVendidos()
+        public List<soldProduct> GetTodosProductosVendidos( int id )
         {
             List<soldProduct> productosV = new List<soldProduct>();
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
+
+
+                SqlParameter sqlParameterPassword = new SqlParameter("id", SqlDbType.BigInt);
+                sqlParameterPassword.Value = id;
+
+
                 using (SqlCommand sqlCommand = new SqlCommand(
                     "SELECT * FROM ProductoVendido", sqlConnection))
                 {
@@ -27,8 +33,8 @@ namespace Coneccion.NET.Handlers
                                 soldProduct productoVendido = new soldProduct();
                                 productoVendido.Id = Convert.ToInt32(dataReader["Id"]);
                                 productoVendido.Stock = Convert.ToInt32(dataReader["Stock"]);
-                                productoVendido.IdProduct = Convert.ToInt32(dataReader["IdProduct"]);
-                                productoVendido.IdSale = Convert.ToInt32(dataReader["IdSale"]);
+                                productoVendido.IdProduct = Convert.ToInt32(dataReader["IdProducto"]);
+                                productoVendido.IdSale = Convert.ToInt32(dataReader["IdVenta"]);
                                 
                                 productosV.Add(productoVendido);
                             }

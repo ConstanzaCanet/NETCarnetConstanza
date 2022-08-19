@@ -4,8 +4,8 @@ namespace Coneccion.NET.Models
 {
     public class Sale
     {
-        public int Id;
-        public string coments;
+        public int Id { get; set; }
+        public string coments { get; set; }
 
         public Sale()
         {
@@ -19,31 +19,6 @@ namespace Coneccion.NET.Models
             this.coments = coments;
         }
 
-        //setters & getters
-        public int ID
-        {
-            get
-            {
-                return this.Id;
-            }
-            set
-            {
-                this.Id = value;
-            }
-
-        }
-
-        public string Coments
-        {
-            get
-            {
-                return this.coments;
-            }
-            set
-            {
-                this.coments = value;
-            }
-        }
 
     }
 }
